@@ -9,13 +9,14 @@ function main() {
     var requester = newParallelCachingRequester(
         3,
         './pages',
-        new RateLimiter(3, 'minute')
+        new RateLimiter(2, 20 * 1000)
     );
 
     var artistScraper = new ArtistSongScraper(requester);
     var lyricsScraper = new LyricsScraper(requester);
     var artistUrls = [
         'http://www.azlyrics.com/t/taylorswift.html',
+	'http://www.azlyrics.com/w/west.html',
     ];
 
     artistUrls.forEach(function(url) {
