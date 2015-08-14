@@ -1,23 +1,33 @@
-var LyricsScraper = require('./LyricsScraper');
 var ArtistSongScraper = require('./ArtistSongScraper');
+var JsonLyricsSaver = require('./JsonLyricsSaver');
+var LyricsScraper = require('./LyricsScraper');
+var RateLimiter = require('limiter').RateLimiter;
+var newParallelCachingRequester = require('./Requesters').newParallelCachingRequester;
 
 function main() {
-    var lyricsScraper = new LyricsScraper();
-    var artistQueries = [
-        'Taylor Swift',
+    var songSaver = new JsonLyricsSaver('songs.json');
+    var requester = newParallelCachingRequester(
+        3,
+        './pages',
+        new RateLimiter(3, 'second')
+    );
+
+    var artistScraper = new ArtistSongScraper(requester);
+    var lyricsScraper = new LyricsScraper(requester);
+    var artistUrls = [
+        'http://www.azlyrics.com/t/taylorswift.html',
     ];
 
-    artistQueries.map(function(artistName) {
-        return new ArtistSongScraper(artistName);
-    }).forEach(function(scraper) {
-        scraper.on('songurl', function(data) {
-            lyricsScraper.enqueue(data.url);
-        });
-        scraper.enqueue(0);
+    artistUrls.forEach(function(url) {
+        artistScraper.enqueue(url);
+    });
+
+    artistScraper.on('songurl', function(url) {
+        lyricsScraper.enqueue(url);
     });
 
     lyricsScraper.on('song', function(song) {
-        console.log(song);
+        console.log(JSON.stringify(song));
     });
 }
 

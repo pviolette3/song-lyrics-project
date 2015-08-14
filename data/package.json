@@ -12,6 +12,6 @@
     "request": "*",
     "cheerio": "*",
     "async": "*",
-    "url-join": "*"
+    "limiter": "*"
   }
 }
