@@ -9,7 +9,7 @@ function main() {
     var requester = newParallelCachingRequester(
         3,
         './pages',
-        new RateLimiter(3, 'second')
+        new RateLimiter(3, 'minute')
     );
 
     var artistScraper = new ArtistSongScraper(requester);
