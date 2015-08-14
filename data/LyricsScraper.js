@@ -18,12 +18,26 @@ LyricsScraper.prototype._parseSong = function(lyricsData) {
     var songName = $('#h1head > h1').text()
         .replace(' lyrics', '')
         .replace(/"/g, '');
-    var rawLyrics = $('#main > b')
+    var labelElem = $('#main > b')
         .filter(function() { return $(this).text().indexOf(songName) !== -1; })
-        .first()
-        .next().next().next()
-        .text();
-    return {artist: artist, songName: songName, lyrics: this._cleanLyrics(rawLyrics)};
+        .first();
+
+    var rawLyrics = '';
+    var elem = $(labelElem.next());
+    while (elem = $(elem.next())) {
+        if (elem.get(0).tagName !== 'div') {
+            continue;
+        }
+        rawLyrics = elem.text();
+        break;
+    }
+
+    return {
+        artist: artist,
+        songName: songName,
+        lyrics: this._cleanLyrics(rawLyrics),
+        url: lyricsData.url,
+    };
 }
 
 LyricsScraper.prototype._cleanLyrics = function(rawLyrics) {
