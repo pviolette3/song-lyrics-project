@@ -30,7 +30,7 @@ ArtistSongScraper.prototype._parseArtistSongLinks = function (html) {
         })
         .get()
         .filter(function(link) {
-            return /\.\./.test(link);
+            return link.indexOf('amazon') === -1 && link.indexOf('lyrics') !== -1;
         });
     return songUrls;
 }

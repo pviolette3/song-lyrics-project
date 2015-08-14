@@ -15,8 +15,8 @@ function main() {
     var artistScraper = new ArtistSongScraper(requester);
     var lyricsScraper = new LyricsScraper(requester);
     var artistUrls = [
-        'http://www.azlyrics.com/t/taylorswift.html',
-	'http://www.azlyrics.com/w/west.html',
+        //'http://web.archive.org/web/20141102175756/http://www.azlyrics.com/t/taylorswift.html',
+        'http://web.archive.org/web/20141106160059/http://www.azlyrics.com/w/west.html',
     ];
 
     artistUrls.forEach(function(url) {
@@ -24,11 +24,12 @@ function main() {
     });
 
     artistScraper.on('songurl', function(url) {
+        console.log(url);
         lyricsScraper.enqueue(url);
     });
 
     lyricsScraper.on('song', function(song) {
-        console.log(JSON.stringify(song));
+        songSaver.save(song);
     });
 }
 
