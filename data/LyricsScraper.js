@@ -25,6 +25,9 @@ LyricsScraper.prototype._parseSong = function(lyricsData) {
     var rawLyrics = '';
     var elem = $(labelElem.next());
     while (elem = $(elem.next())) {
+	if (!elem || !elem.get(0)) {
+	    break;
+	}
         if (elem.get(0).tagName !== 'div') {
             continue;
         }

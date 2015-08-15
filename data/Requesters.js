@@ -84,7 +84,7 @@ function ParallelRequester(parallelism, requester) {
 }
 
 ParallelRequester.prototype.get = function(url, callback) {
-    this.downloadQueue.push({url: url}, function(err, data) {
+    this.downloadQueue.unshift({url: url}, function(err, data) {
         callback(err, data);
     });
 }

@@ -10,7 +10,7 @@ function main() {
     var requester = newParallelCachingRequester(
         3,
         './pages',
-        new RateLimiter(2, 20 * 1000)
+        new RateLimiter(1, 'second')
     );
 
     var artistPageScraper = new ArtistScraper(requester);
@@ -32,7 +32,6 @@ function main() {
     });
 
     artistScraper.on('songurl', function(url) {
-        console.log(url);
         lyricsScraper.enqueue(url);
     });
 
