@@ -4,11 +4,12 @@ var JsonLyricsSaver = require('./JsonLyricsSaver');
 var LyricsScraper = require('./LyricsScraper');
 var RateLimiter = require('limiter').RateLimiter;
 var newParallelCachingRequester = require('./Requesters').newParallelCachingRequester;
+var os = require('os');
 
 function main() {
     var songSaver = new JsonLyricsSaver('songs.json');
     var requester = newParallelCachingRequester(
-        3,
+        os.cpus().length + 1,
         './pages',
         new RateLimiter(1, 'second')
     );
