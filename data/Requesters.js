@@ -66,7 +66,7 @@ CachingRequester.prototype._sendLocalCopy = function(localPath, callback) {
 CachingRequester.prototype._fetchAndSave = function(url, localPath, callback) {
     this.requester.get(url, function(err, body) {
         if (err) {
-            return callback(new Error('Could not get url'),  null);
+            return callback(err,  null);
         }
 
         fs.writeFile(localPath, body, function(err) {
